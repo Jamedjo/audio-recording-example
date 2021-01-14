@@ -233,36 +233,25 @@ export default class App extends React.Component<Props, State> {
       );
     }
 
-    const playbackOpacity = !this.state.isPlaybackAllowed || this.state.isLoading
-      ? DISABLED_OPACITY
-      : 1.0;
+    const playbackOpacity = !this.state.isPlaybackAllowed || this.state.isLoading ? DISABLED_OPACITY : 1.0;
+    const canRecordOpacity = this.state.isLoading ? DISABLED_OPACITY : 1.0;
+    const recordingOpacity = this.state.isRecording ? 1.0 : 0.0;
 
     return (
       <View style={styles.container}>
-        <View
-          style={[
-            {
-              opacity: this.state.isLoading ? DISABLED_OPACITY : 1.0,
-            },
-          ]}
+        <StatusBar backgroundColor={BACKGROUND_COLOR} barStyle="dark-content" />
+        <TouchableHighlight
+          underlayColor={BACKGROUND_COLOR}
+          style={[ { opacity: canRecordOpacity }, styles.wrapper ]}
+          onPress={this._onRecordPressed}
+          disabled={this.state.isLoading}
         >
-          <StatusBar backgroundColor={BACKGROUND_COLOR} barStyle="dark-content" />
-          <TouchableHighlight
-            underlayColor={BACKGROUND_COLOR}
-            style={styles.wrapper}
-            onPress={this._onRecordPressed}
-            disabled={this.state.isLoading}
-          >
-            <Image style={styles.image} source={Icons.RECORD_BUTTON.module} />
-          </TouchableHighlight>
-          <Image
-            style={[
-              styles.image,
-              { opacity: this.state.isRecording ? 1.0 : 0.0 },
-            ]}
-            source={Icons.RECORDING.module}
-          />
-        </View>
+          <Image style={styles.image} source={Icons.RECORD_BUTTON.module} />
+        </TouchableHighlight>
+        <Image
+          style={[ styles.image, { opacity: recordingOpacity }, ]}
+          source={Icons.RECORDING.module}
+        />
         <TouchableHighlight
           underlayColor={BACKGROUND_COLOR}
           style={[ { opacity: playbackOpacity }, styles.wrapper]}
